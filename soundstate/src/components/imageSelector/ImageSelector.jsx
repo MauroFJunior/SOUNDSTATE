@@ -1,13 +1,14 @@
 import styles from "./imageSelector.module.css"
 
-function ImageSelector({icon}) {
+function ImageSelector({ content }) {
     return (
         <div className={styles.selector_container}>
-            <div className={styles.selector_icon}>
+            {content == "" && <div className={styles.selector_icon}>
                 <span className="material-symbols-outlined">
-                    {icon || "photo_camera"}
+                    {"photo_camera"}
                 </span>
-            </div>
+            </div>}
+            {content != "" && <img src={content} alt="" />}
         </div>
     )
 }
