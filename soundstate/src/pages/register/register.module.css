@@ -210,6 +210,13 @@
                     border-color: #ffffff60;
                 }
             }
+
+            .register_invalid {
+
+                outline : solid 1px #ff0000;
+                border-color: #ffffff00;
+                
+            }
         }
     }
 
