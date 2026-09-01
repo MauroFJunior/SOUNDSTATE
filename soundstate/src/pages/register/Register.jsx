@@ -1,6 +1,8 @@
 import styles from "./register.module.css"
 import ImageSelector from "../../components/imageSelector/ImageSelector";
 import ImageSearch from "../../components/ImageSearch/ImageSearch.jsx";
+import GenericModal from "../../components/genericModal/GenericModal.jsx";
+import Loader from "../../components/Loader/Loader.jsx";
 import { useEffect, useState } from "react";
 
 function Register({ closeRegisterModal }) {
@@ -12,6 +14,16 @@ function Register({ closeRegisterModal }) {
     const [genre, setGenre] = useState("");
     const [year, setYear] = useState("");
     const [durSec, setDurSec] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+    const [errorTitle, setErrorTitle] = useState("");
+    const [errorIcon, setErrorIcon] = useState("error");
+    const [errorButtonAction, setErrorButtonAction] = useState(() => () => { });
+    const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+
+    function closeErrorModal() {
+        setIsErrorModalOpen(false);
+    }
 
     const isFilled =
         songName.trim() !== "" &&
@@ -68,14 +80,64 @@ function Register({ closeRegisterModal }) {
         };
 
         console.log(payload);
-        //return payload;
+        return payload;
+    }
 
-        closeRegisterModal();
+    async function registerSong(payload) {
+        setIsLoading(true);
+        await fetch("http://localhost:8080/songs", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+        }).then((response) => {
+            if (response.status === 201) {
+                console.log("Song registered successfully");
+                setIsLoading(false);
+                setErrorMessage("Song registered successfully!");
+                setErrorTitle("Success");
+                setErrorIcon("check_circle");
+                setErrorButtonAction(() => () => {
+                    setIsErrorModalOpen(false);
+                    closeRegisterModal();
+                });
+                setIsErrorModalOpen(true);
+            } else {
+                if (response.status === 400) {
+                    setErrorTitle("Invalid Data");
+                    setErrorIcon("error");
+                    setErrorMessage("Please check the input fields and try again.");
+                }
+                else if (response.status === 409) {
+                    setErrorTitle("Duplicate Song");
+                    setErrorIcon("error");
+                    setErrorMessage("This song already exists in the database.");
+                }
+                else {
+                    setErrorTitle("Error");
+                    setErrorIcon("error");
+                    setErrorMessage("An error occurred while registering the song. Please try again.");
+                }
+                setErrorButtonAction(() => () => closeErrorModal());
+                setIsLoading(false);
+                setIsErrorModalOpen(true);
+            }
+        }).catch(() => {
+            setIsLoading(false);
+            setErrorTitle("Connection Error");
+            setErrorIcon("error");
+            setErrorMessage("Could not reach the server. Please try again.");
+            setErrorButtonAction(() => () => closeErrorModal());
+            setIsErrorModalOpen(true);
+        });
     }
 
     return (
         <div className={styles.register_modal_overlay}>
+            {isErrorModalOpen && <GenericModal errorMessage={errorMessage} icon={errorIcon} errorTitle={errorTitle} onClose={errorButtonAction} />}
             {isImageSearchOpen && <ImageSearch closeImageSearch={handleImageSearch} inputedSong={songName || ""} setArtwork={setSelectArtwork} />}
+            {isLoading && <Loader />}
             <div className={styles.register_modal}>
                 <div className={styles.register_container}>
                     <div className={styles.register_content}>
@@ -147,7 +209,7 @@ function Register({ closeRegisterModal }) {
                                 </div>
                                 <button
                                     className={`${styles.register_button} ${isValid ? styles.active : styles.inactive}`}
-                                    onClick={isValid ? createRegisterPayload : undefined}
+                                    onClick={isValid ? () => registerSong(createRegisterPayload()) : undefined}
                                     disabled={!isValid}
                                 >
                                     <span className="material-symbols-outlined">

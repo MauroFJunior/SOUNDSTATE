@@ -12,40 +12,56 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/songs")
-
 public class SongController {
+
+
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @GetMapping("/")
+    private final BeanPropertyRowMapper<Song> mapper = new BeanPropertyRowMapper<>(Song.class);
+
+    @GetMapping()
     private ResponseEntity<List<Song>> getAllSongs() {
         String sql = "SELECT * FROM songs";
-        return ResponseEntity.status(200).body((jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Song.class))));
+        return ResponseEntity.status(200).body((jdbcTemplate.query(sql, mapper)));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Song> getSongFromID(@PathVariable Integer id) {
+
+        Song foundSong;
+
+        try {
+            foundSong = jdbcTemplate.queryForObject("SELECT * FROM songs WHERE id = ?", mapper, id);
+        } catch(Exception e) {
+            return ResponseEntity.status(404).build();
+        }
+
+        return ResponseEntity.status(200).body(foundSong);
     }
 
     @PostMapping()
     private ResponseEntity<Song> registerSong(@RequestBody Song body) {
 
-        if(
-                        body.getName().isEmpty() ||
-                        body.getAlbum().isEmpty() ||
-                        (body.getYear() == null || body.getYear() > 2026) ||
-                        body.getArtist().isEmpty() ||
-                        body.getGenre().isEmpty()
+        if (body == null ||
+                isBlank(body.getName()) ||
+                isBlank(body.getAlbum()) ||
+                isBlank(body.getArtist()) ||
+                isBlank(body.getGenre()) ||
+                body.getYear() == null || body.getYear() <= 0 || body.getYear() > 2026 ||
+                body.getDurSec() == null || body.getDurSec() <= 0 ||
+                isBlank(body.getArtwork())
         ) {
             return ResponseEntity.status(400).build();
         }
 
-
-
-        String sql = String.format("INSERT INTO songs VALUES (default, ?, ?, ?, ?, %d)", body.getYear(),
-                body.getName(), body.getArtist(), body.getGenre(), body.getAlbum(), body.getYear());
+        String sql = "INSERT INTO songs VALUES (default, ?, ?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -57,6 +73,9 @@ public class SongController {
                 ps.setString(2, body.getArtist());
                 ps.setString(3, body.getGenre());
                 ps.setString(4, body.getAlbum());
+                ps.setInt(5, body.getYear());
+                ps.setInt(6, body.getDurSec());
+                ps.setString(7, body.getArtwork());
 
                 return ps;
             }, keyHolder);
@@ -89,14 +108,18 @@ public class SongController {
 
     @PutMapping("/{id}")
     private ResponseEntity<String> putFromID(@PathVariable Integer id, @RequestBody Song body) {
-        String sql = "UPDATE SONGS SET \"name\" = ?, \"artist\" = ?, \"genre\" = ?, \"album\" = ?, \"year\" = ? WHERE ID = ?";
+        String sql = "UPDATE SONGS SET name = ?, artist = ?, genre = ?, album = ?, year = ?, durSec = ?, artwork = ? WHERE ID = ?";
+
+        if(body == null || id == null) {
+            return ResponseEntity.status(400).build();
+        }
 
         if (getCheckId(id) != 1) {
             return ResponseEntity.status(404).build();
         }
 
         try {
-            jdbcTemplate.update(sql,body.getName(), body.getArtist(), body.getGenre(), body.getAlbum(), body.getYear(), id);
+            jdbcTemplate.update(sql,body.getName(), body.getArtist(), body.getGenre(), body.getAlbum(), body.getYear(), body.getDurSec(), body.getArtwork(), id);
         } catch (Exception e) {
             return ResponseEntity.status(404).body(e.getLocalizedMessage());
         }
@@ -111,6 +134,10 @@ public class SongController {
                 Integer.class,
                 id
         );
+    }
+
+    private boolean isBlank(String s) {
+        return s == null || s.isBlank();
     }
 
 

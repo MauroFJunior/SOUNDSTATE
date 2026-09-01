@@ -7,14 +7,18 @@ public class Song {
     private String genre;
     private String album;
     private Integer year;
+    private Integer durSec;
+    private String artwork;
 
-    public Song(Integer id, String name, String artist, String genre, String album, Integer year) {
+    public Song(Integer id, String name, String artist, String genre, String album, Integer year, Integer durSec, String artwork) {
         this.id = id;
         this.name = name;
         this.artist = artist;
         this.genre = genre;
         this.album = album;
         this.year = year;
+        this.durSec = durSec;
+        this.artwork = artwork;
     }
 
     public Song() {
@@ -67,4 +71,12 @@ public class Song {
     public void setYear(Integer year) {
         this.year = year;
     }
+
+    public Integer getDurSec() { return durSec; }
+
+    public void setDurSec(Integer durSec) { this.durSec = durSec; }
+
+    public String getArtwork() { return artwork; }
+
+    public void setArtwork(String artwork) { this.artwork = artwork; }
 }
