@@ -1,0 +1,223 @@
+.register_modal_overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.45);
+    padding: 2rem;
+    z-index: 1000;
+}
+
+.register_modal {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+}
+
+.cc {
+    margin-top: 2.5rem;
+    margin-bottom: -2.5rem;
+    font-family: "Open Sans", monospace;
+    font-weight: 200;
+    font-size: .8rem;
+    color: #e2e2e260;
+}
+
+.register_container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.register_content {
+    width: 100%;
+    min-height: 760px;
+
+    padding: 0rem 2rem;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+
+    border-radius: 24px;
+
+    gap: 12px;
+
+    background: #00000080;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(12.3px);
+    -webkit-backdrop-filter: blur(12.3px);
+    border: 2px solid rgba(255, 255, 255, .25);
+
+    .register_content_header {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 1rem 0 0 1rem;
+
+        .register_content_header_text {
+
+            display: flex;
+            flex-direction: column;
+
+            .register_content_title {
+                font-family: "MAJOR MONO DISPLAY", monospace;
+                font-weight: 200;
+                font-size: 1.5rem;
+                color: #e2e2e2;
+            }
+
+            .register_content_subtitle {
+                font-family: "Open Sans", monospace;
+                font-weight: 200;
+                font-size: 1rem;
+                color: #e2e2e260;
+            }
+        }
+
+        .register_content_header_action {
+            font-weight: 200;
+            font-size: 1.5rem;
+            color: #e2e2e260;
+
+            margin-right: -1rem;
+            margin-top: -2.2rem;
+
+            cursor: pointer;
+
+            transition: all .3s ease-in-out;
+
+            &:hover {
+                color: #e2e2e2;
+                transform: scale(1.1);
+            }
+        }
+    }
+
+    .register_content_center_right {
+        width: 40%;
+        height: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+        padding: .5rem 0 .8rem 0;
+
+        gap: 12px;
+
+        .register_image_selector {
+            height: 90%;
+            aspect-ratio: 1;
+        }
+
+        .register_button {
+            width: 95%;
+            height: 10%;
+            border-radius: 12px;
+
+            transition: all .3s ease-in-out;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 12px;
+
+            font-family: "Open Sans", monospace;
+            font-weight: 200;    
+            font-size: 1rem;
+            letter-spacing: 5px;
+
+            &.inactive {
+
+                border: solid 2px #ffffff20;
+                background-color: #222;
+
+                color: #e2e2e240;
+            }
+
+            &.active {
+                border: solid 2px #ffffff40;
+                background-color: #00000040;
+
+                color: #e2e2e2;
+
+                cursor: pointer;
+
+                &:hover {
+                    border-color: #ffffff60;
+                    background-color: #00000060;
+                }
+            }
+        }
+    }
+
+    .register_content_center {
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+
+        padding-bottom: 2rem;
+
+        gap: 12px;
+
+
+        .register_input_container {
+            flex: 1;
+            height: 100%;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 1.5rem;
+
+            background: #000000;
+            background: radial-gradient(circle, rgba(0, 0, 0, .5) 0%, rgba(237, 221, 83, 0) 70%);
+
+            padding: 12px;
+
+            .register_input {
+                width: 100%;
+                height: 80px;
+
+                border-radius: 12px;
+                border: solid 2px #ffffff40;
+
+                background-color: #151515;
+                padding: 0 1rem;
+
+                font-family: "open sans", monospace;
+
+                color: #e2e2e2;
+                font-size: 1rem;
+
+                &:focus {
+                    outline: solid 1px #e2e2e2;
+                    border-color: #ffffff60;
+                }
+            }
+
+            .register_invalid {
+
+                outline : solid 1px #ff0000;
+                border-color: #ffffff00;
+                
+            }
+        }
+    }
+
+}

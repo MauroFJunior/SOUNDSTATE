@@ -1,7 +1,7 @@
 import styles from './index.module.css';
 import QuickAction from '../../components/quickAction/QuickAction.jsx';
 
-function Index() {
+function Index({ openRegisterModal }) {
 
     let randomNumber = Math.floor(Math.random() * 10 + 1);
 
@@ -17,10 +17,10 @@ function Index() {
                         <div className={styles.content_title}>SOUNDSTATE</div>
                         <div className={styles.content_subtitle}>A save-state. For music. <span className={styles.content_underline}>You get it.</span></div>
                     </div>
-                   <div className={styles.content_quickActions}>
-                        <QuickAction icon="play_circle" text="Save" onClick={() => {}} />
-                        <QuickAction icon="library_books" text="Browse" onClick={() => {}} />
-                        <QuickAction icon="playlist_add" text="Organize" onClick={() => {}} />
+                    <div className={styles.content_quickActions}>
+                        <QuickAction icon="play_circle" text="Save" onClick={openRegisterModal} />
+                        <QuickAction icon="library_books" text="Browse" onClick={() => { }} />
+                        <QuickAction icon="playlist_add" text="Organize" onClick={() => { }} />
                     </div>
                 </div>
                 <div className={styles.cc}>SoundState @ 2026 - Mauro Jr</div>
