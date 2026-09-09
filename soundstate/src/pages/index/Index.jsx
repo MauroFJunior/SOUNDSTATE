@@ -27,7 +27,6 @@ function Index({ openRegisterModal }) {
                     <div className={styles.content_quickActions}>
                         <QuickAction icon="play_circle" text="Save" onClick={openRegisterModal} />
                         <QuickAction icon="library_books" text="Browse" onClick={() => handleNavigation("/browse")} />
-                        <QuickAction icon="playlist_add" text="Organize" onClick={() => handleNavigation("/organize")} />
                     </div>
                 </div>
                 <div className={styles.cc}>SoundState @ 2026 - Mauro Jr</div>
