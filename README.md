@@ -19,10 +19,52 @@ Projeto individual 3SEM: o savestate das suas músicas.
 
 ### Front-end
 
-```bash
-cd soundstate
+Na pasta /soundstate:
+
 npm install
 npm run dev
-```
+
 
 - Acesse: `http://localhost:5173`
+
+## Endpoints utilizados
+
+Base URL: `http://localhost:8080`
+
+### GET `/songs`
+
+- Lista as músicas cadastradas.
+- Retorno: `200 OK`
+
+```json
+[
+	{
+		"id": 1,
+		"name": "Nome da música",
+		"artist": "Artista",
+		"genre": "Gênero",
+		"album": "Álbum",
+		"year": 2026,
+		"durSec": 180,
+		"artwork": "https://exemplo.com/capa.jpg"
+	}
+]
+```
+
+### POST `/songs`
+
+- Cadastra uma música.
+- Retorno: `201 Created`
+- Erro: `400 Bad Request` para dados inválidos; `409 Conflict` para música duplicada.
+
+```json
+{
+	"name": "Nome da música",
+	"artist": "Artista",
+	"genre": "Gênero",
+	"album": "Álbum",
+	"year": 2026,
+	"durSec": 180,
+	"artwork": "https://exemplo.com/capa.jpg"
+}
+```
