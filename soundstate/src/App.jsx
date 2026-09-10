@@ -1,8 +1,7 @@
-import Index from './pages/index/Index.jsx';
-import Browse from './pages/Browse/Browse.jsx';
-import Organize from './pages/Organize/Organize.jsx';
 import Register from './pages/register/Register.jsx';
 import { useState } from 'react';
+import { RouterProvider } from 'react-router-dom';
+import { createAppRouter } from './routes.jsx';
 
 function App() {
 
@@ -12,10 +11,12 @@ function App() {
     setRegisterModalState(!isRegisterModalOpen);
   }
 
+  const [router] = useState(() => createAppRouter(handleRegisterModal));
+
   return (
     <>
       {isRegisterModalOpen && <Register closeRegisterModal={handleRegisterModal} />}
-      <Index openRegisterModal={handleRegisterModal} />
+      <RouterProvider router={router} />
     </>
   )
 }

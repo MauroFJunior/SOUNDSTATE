@@ -1,9 +1,16 @@
 import styles from './index.module.css';
 import QuickAction from '../../components/quickAction/QuickAction.jsx';
+import { useNavigate } from 'react-router-dom';
 
 function Index({ openRegisterModal }) {
 
     let randomNumber = Math.floor(Math.random() * 10 + 1);
+
+    const navigate = useNavigate();
+
+    const handleNavigation = (path) => {
+        navigate(path);
+    };
 
     return (
         <div className={styles.index_page}>
@@ -19,8 +26,7 @@ function Index({ openRegisterModal }) {
                     </div>
                     <div className={styles.content_quickActions}>
                         <QuickAction icon="play_circle" text="Save" onClick={openRegisterModal} />
-                        <QuickAction icon="library_books" text="Browse" onClick={() => { }} />
-                        <QuickAction icon="playlist_add" text="Organize" onClick={() => { }} />
+                        <QuickAction icon="library_books" text="Browse" onClick={() => handleNavigation("/browse")} />
                     </div>
                 </div>
                 <div className={styles.cc}>SoundState @ 2026 - Mauro Jr</div>
